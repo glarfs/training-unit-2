@@ -1,10 +1,12 @@
 <!DOCTYPE HTML>
-<div class="container" scrolly-scroll ng-controller="taskController">
+<div class="container" ng-controller="taskController">
 
     <h1>Task list</h1>
     <ul>
         <li ng-repeat="task in tasks">{{task.name}}</li>
+        <li ng-if="newTask">{{newTask}}...</li>
     </ul>
     <input ng-model="newTask" type="text" placeholder="Task title">
     <button class="btn btn-primary" ng-click="addTask()">Add task</button>
+    <button class="btn btn-default" ng-click="cancelTask()" ng-show="newTask">Cancel</button>
 </div>

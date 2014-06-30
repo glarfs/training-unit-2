@@ -29,4 +29,8 @@ angular.module('boilerplateApp')
             });
             $scope.newTask = '';
         };
+
+        $scope.cancelTask = function () {
+            $scope.newTask = '';
+        };
     }]);
