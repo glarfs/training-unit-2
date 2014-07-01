@@ -8,4 +8,6 @@ angular.module('boilerplateApp')
         $log.debug('homeController loading');
 
         $scope.homeTitle = 'Home page';
+
+        $scope.today = new Date();
     }]);
