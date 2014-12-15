@@ -1,0 +1,56 @@
+<div class="container">
+    <h1>Tasks list</h1>
+    <div class="row">
+        <div class="col-md-3 col-sm-4">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                <input ng-model="search.title" type="text" class="form-control" placeholder="Filter tasks...">
+                <span ng-if="search.title.length" class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="search.title=''">Clear filter</button>
+                </span>
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                <input ng-model="newTask" type="text" class="form-control" placeholder="Add task..." ng-keypress="taskKeyPressed($event)">
+                <span ng-if="newTask.length" class="input-group-btn">
+                    <button class="btn btn-primary" type="button" ng-click="addTask()">Add!</button>
+                </span>
+            </div>
+            <br>
+        </div>
+        <div class="col-md-9 col-sm-8">
+            <div rest rest-path="tasks" rest-name="tasks"></div>
+            <alert ng-if="tasksLoading" type="warning">Loading...</alert>
+            <alert ng-if="tasksError" type="danger" close="tasksError=false">Error loading topics</alert>
+
+            <div class="list-group">
+                <a ng-repeat="task in tasks | filter:search | orderBy:['done','title']" class="list-group-item fade-in">
+                    <div class="pull-left" ng-click="task.done=!task.done">
+                        <i class="glyphicon" ng-class="{'glyphicon-unchecked':!task.done,'glyphicon-check':task.done}"></i>
+                        <label ng-class="{strike:task.done}">{{task.title}}</label>
+                    </div>
+                    <div class="pull-right" ng-click="deleteTask(task.title)">
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+
+                <a ng-if="newTask.length" class="list-group-item">
+                    <i class="glyphicon glyphicon-unchecked"></i>
+                    <label><i>{{newTask}}</i>
+                    </label>
+                </a>
+            </div>
+
+            <alert ng-if="deletingTask" type="warning">Deleting task...</alert>
+            <alert ng-if="deleteTaskSuccess" class="fade-in" type="success">Task deleted successfully!</alert>
+            <alert ng-if="deleteTaskError" class="fade-in" type="danger" close="deleteTaskError=false">Error when deleting task.</alert>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" ui-sref="home">Back to Home <i class="glyphicon glyphicon-arrow-left"></i>
+    </button>
+
+    <hr>
+    <pre>$scope.tasks:<br>{{tasks | json}}</pre>
+</div>

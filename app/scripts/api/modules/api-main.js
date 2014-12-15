@@ -15,7 +15,7 @@
 
 
 /* Optional modules initialization */
-var optionalModules = ['xeditable', 'ja.qr', 'vr.directives.slider', 'ui.bootstrap', 'AppDetection', 'AppREST', 'AppTranslate', 'AppServerPush', 'AppLogging'];
+var optionalModules = ['xeditable', 'ja.qr', 'vr.directives.slider', 'ui.bootstrap', 'AppDetection', 'AppREST', 'AppTranslate', 'AppModal', 'AppLogging', 'AppServerPush', 'AppPerformance', 'ngAnimate'];
 
 angular.forEach(optionalModules, function (element) {
     try {
@@ -29,7 +29,7 @@ angular.forEach(optionalModules, function (element) {
 angular.module('COMMONAPI', optionalModules.concat(['ui.router', 'AppCache', 'AppConfiguration', 'jqm', 'AppSecurity']))
 
 .run(['$rootScope', '$state', '$stateParams',
-    function ($rootScope, $state, $stateParams) {
+        function ($rootScope, $state, $stateParams) {
 
         // It's very handy to add references to $state and $stateParams to the $rootScope
         // so that you can access them from any scope within your applications.For example,
@@ -43,4 +43,4 @@ angular.module('COMMONAPI', optionalModules.concat(['ui.router', 'AppCache', 'Ap
     function ($compileProvider) {
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|itms-services):/);
-    }]);
+        }]);

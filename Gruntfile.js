@@ -1,6 +1,6 @@
-// Generated on 2013-09-19 using generator-angular 0.4.0
 'use strict';
-var LIVERELOAD_PORT = 35728;
+
+var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({
     port: LIVERELOAD_PORT
 });
@@ -47,14 +47,29 @@ var httpMethods = function (request, response, next) {
 
             if (fs.existsSync(path)) {
 
+                if (request.method === 'POST') {
+                    response.statusCode = 403;
+                    response.end('Resource already exists.');
+                    return;
+                }
+
                 fs.writeFile(path, request.content, function (err) {
                     if (err) {
-                        throw err;
+                        response.statusCode(404);
+                        console.log('File not saved: ' + JSON.stringify(err));
+                        response.end('Error writing to file.');
+                    } else {
+                        console.log('File saved to: ' + path);
+                        response.end('File was saved.');
                     }
-                    console.log('file saved');
-                    response.end('file was saved');
                 });
                 return;
+            } else {
+                if (request.method === 'PUT') {
+                    response.statusCode = 404;
+                    response.end('Resource not found: ' + JSON.stringify(request.url));
+                    return;
+                }
             }
 
             if (request.url === '/log') {
@@ -93,7 +108,7 @@ module.exports = function (grunt) {
         app: 'app',
         dist: 'dist',
         doc: 'doc',
-        server: 'server'
+        test: 'test'
     };
 
     try {
@@ -103,14 +118,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
-            coffee: {
-                files: ['<%= yeoman.app %>/scripts/**/*.coffee'],
-                tasks: ['coffee:app']
-            },
-            coffeeTest: {
-                files: ['test/spec/**/*.coffee'],
-                tasks: ['coffee:test']
-            },
             compass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer:tmp']
@@ -127,7 +134,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/**/*.html',
                     '{.tmp,<%= yeoman.app %>}/styles/**/*.css',
                     '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
-                    '{.tmp,<%= yeoman.app %>}/configuration/**/*.json',
+                    '{.tmp,<%= yeoman.app %>}/resources/**/*',
                     '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
@@ -159,7 +166,7 @@ module.exports = function (grunt) {
         connect: {
             options: {
                 protocol: 'http',
-                port: 9090,
+                port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost'
             },
@@ -170,7 +177,6 @@ module.exports = function (grunt) {
                             delayApiCalls,
                             lrSnippet,
                             mountFolder(connect, '.tmp'),
-                            mountFolder(connect, yeomanConfig.server),
                             mountFolder(connect, yeomanConfig.app),
                             httpMethods
                         ];
@@ -179,12 +185,13 @@ module.exports = function (grunt) {
             },
             test: {
                 options: {
+                    port: 9090,
                     middleware: function (connect) {
                         return [
                             mountFolder(connect, '.tmp'),
-                            mountFolder(connect, yeomanConfig.server),
                             mountFolder(connect, yeomanConfig.app),
-                            mountFolder(connect, 'test')
+                            mountFolder(connect, '<%= yeoman.test %>'),
+                            httpMethods
                         ];
                     }
                 }
@@ -194,7 +201,6 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             delayApiCalls,
-                            mountFolder(connect, yeomanConfig.server),
                             mountFolder(connect, yeomanConfig.dist),
                             httpMethods
                         ];
@@ -203,7 +209,7 @@ module.exports = function (grunt) {
             },
             doc: {
                 options: {
-                    port: 9001,
+                    port: 3000,
                     middleware: function (connect) {
                         return [
                             mountFolder(connect, yeomanConfig.doc)
@@ -241,30 +247,6 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 '<%= yeoman.app %>/scripts/{,*/}*.js'
             ]
-        },
-        coffee: {
-            options: {
-                sourceMap: true,
-                sourceRoot: ''
-            },
-            app: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/scripts',
-                    src: '**/*.coffee',
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
-            }
         },
         compass: {
             options: {
@@ -395,14 +377,14 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         '.htaccess',
+                        'api/**',
                         'images/{,*/}*.{gif,webp}',
                         'resources/**',
                         'styles/fonts/*',
                         'styles/images/*',
                         '*.html',
                         'views/**/*.html',
-                        'template/**/*.html',
-                        'bower_components/bootstrap-sass/img/glyphicons-halflings*.png'
+                        'template/**/*.html'
                     ]
                 }, {
                     expand: true,
@@ -440,6 +422,12 @@ module.exports = function (grunt) {
                     '*ar-eg.js'
                 ]
             },
+            fonts: {
+                expand: true,
+                cwd: '<%= yeoman.app %>/bower_components/bootstrap-sass/fonts',
+                dest: '.tmp/fonts',
+                src: '*'
+            },
             png: {
                 expand: true,
                 cwd: '<%= yeoman.app %>',
@@ -449,40 +437,39 @@ module.exports = function (grunt) {
         },
         concurrent: {
             server: [
-                'coffee',
                 'compass:server',
-                'copy:i18n'
+                'copy:i18n',
+                'copy:fonts'
             ],
             dist: [
-                'coffee',
                 'compass:dist',
                 'imagemin'
             ]
         },
         karma: {
             unit: {
-                configFile: './test/karma-unit.conf.js',
+                configFile: '<%= yeoman.test %>/karma-unit.conf.js',
                 autoWatch: false,
                 singleRun: true
             },
             unit_auto: {
-                configFile: './test/karma-unit.conf.js'
+                configFile: '<%= yeoman.test %>/karma-unit.conf.js'
             },
             midway: {
-                configFile: './test/karma-midway.conf.js',
+                configFile: '<%= yeoman.test %>/karma-midway.conf.js',
                 autoWatch: false,
                 singleRun: true
             },
             midway_auto: {
-                configFile: './test/karma-midway.conf.js'
+                configFile: '<%= yeoman.test %>/karma-midway.conf.js'
             },
             e2e: {
-                configFile: './test/karma-e2e.conf.js',
+                configFile: '<%= yeoman.test %>/karma-e2e.conf.js',
                 autoWatch: false,
                 singleRun: true
             },
             e2e_auto: {
-                configFile: './test/karma-e2e.conf.js'
+                configFile: '<%= yeoman.test %>/karma-e2e.conf.js'
             }
         },
         cdnify: {
@@ -560,21 +547,25 @@ module.exports = function (grunt) {
         'connect:test'
     ]);
 
-    grunt.registerTask('test', ['testserver', 'karma:unit', 'karma:midway', 'karma:e2e']);
-    grunt.registerTask('test:unit', ['karma:unit']);
-    grunt.registerTask('test:midway', ['testserver', 'karma:midway']);
-    grunt.registerTask('test:e2e', ['testserver', 'karma:e2e']);
+    grunt.registerTask('test', [
+        'karma:unit',
+        'testserver',
+        'karma:midway',
+        'karma:e2e'
+    ]);
 
-    //keeping these around for legacy use
-    grunt.registerTask('autotest', ['autotest:unit']);
-    grunt.registerTask('autotest:unit', ['karma:unit_auto']);
-    grunt.registerTask('autotest:midway', ['testserver', 'karma:midway_auto']);
-    grunt.registerTask('autotest:e2e', ['testserver', 'karma:e2e_auto']);
+    grunt.registerTask('test:midway', [
+        'testserver',
+        'karma:midway_auto'
+    ]);
 
+    grunt.registerTask('test:e2e', [
+        'testserver',
+        'karma:e2e_auto'
+    ]);
 
     grunt.registerTask('devmode', [
-        'karma:unit',
-        'watch:karma'
+        'karma:unit_auto'
     ]);
 
     grunt.registerTask('doc', [

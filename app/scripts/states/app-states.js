@@ -7,57 +7,38 @@
 
 'use strict';
 
-angular.module('boilerplateApp')
-    .config(
-    ['$stateProvider', '$urlRouterProvider',
-      function ($stateProvider, $urlRouterProvider) {
+angular.module('App')
 
-                ///////////////////////////////
-                // 1-Redirects and Otherwise //
-                ///////////////////////////////
+.config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
 
-                // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
-                $urlRouterProvider
+        ///////////////////////////////
+        // 1-Redirects and Otherwise //
+        ///////////////////////////////
 
-                // The `when` method says if the url is ever the 1st param, then redirect to the 2nd param
-                // Here we are just setting up some convenience urls.
-                //                .when('/t?id', '/topics/:id')
-                //                    .when('/t/:id', '/topics/:id')
+        // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
+        // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
+        $urlRouterProvider.otherwise('/home');
 
+        //////////////////////////
+        // 2-State Configurations
+        //////////////////////////
 
-                // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
-                .otherwise('/home');
+        // We must configure states using $stateProvider.
+        $stateProvider
 
+        .state("home", {
 
-                //////////////////////////
-                // 2-State Configurations
-                // Several states hav been configured:
-                // home
-                // tasks
-                //
-                //////////////////////////
+            // Use a url of "/" to set a states as the "index".
+            url: "/home",
+            templateUrl: 'views/home.html'
+        })
 
-                // We must configure states using $stateProvider.
-                $stateProvider
+        .state("tasks", {
 
-                //////////
-                // Home //
-                //////////
-
-                .state("home", {
-
-                    // Use a url of "/" to set a states as the "index".
-                    url: "/home",
-                    templateUrl: 'views/home.html'
-
-                })
-
-                ///////////
-                // Tasks //
-                ///////////
-                .state('tasks', {
-
-                    url: '/tasks',
-                    templateUrl: 'views/tasks/tasks.html'
-                });
-            }]);
+            // Use a url of "/" to set a states as the "index".
+            url: "/tasks",
+            templateUrl: 'views/tasks.html',
+            controller: 'tasksController'
+        });
+}]);

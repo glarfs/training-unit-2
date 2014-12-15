@@ -8,43 +8,43 @@
 
 
 /**
- * @ngdoc module
- * @name AppServerPush
- * @description
- * This module handles server data communication when it pushes them to the client
- * exposing the factory SocketFactory, which is an API for instantiating sockets
- * that are integrated with Angular's digest cycle.
- * It is now based on SocketIO (http://socket.io/). Why?
- *
- * Using WebSockets is a modern, bidirectional protocol that enables an interactive communication
- * session between the browser and a server. Its main current drawback is
- * that implementation is generally only available in the latest browsers. However, by
- * using Socket.IO, this low level detail is abstracted away and we, as programmers,
- * are relieved of the need to write browser-specific code.
- *
- * The current release of socket.io is 0.9.10.
- *
- * The module AppServerPush is included in the main module.
- *
- * The private module AppSocketIO simply wraps SocketIO API to be used by AppServerPush.
- *
- * So, AppServerPush is ready to integrate other Server Push approaches (e.g. Atmosphere) only by including
- * a new module and injecting it to AppServerPush.
- *
- *
- * NOTE ABOUT CLIENT DEPENDENCIES WITH SOCKET.IO
- *
- * The Socket.IO server will handle serving the correct version of the Socket.IO client library;
- *
- * We should not be using one from elsewhere on the Internet. From the top example on http://socket.io/:
- *
- *  <script src="/socket.io/socket.io.js"></script>
- *
- * This works because we wrap our HTTP server in Socket.IO (see the example at How To Use) and it intercepts
- * requests for /socket.io/socket.io.js and sends the appropriate response automatically.
- *
- * That is the reason it is not a dependency handled by bower.
- */
+* @ngdoc module
+* @name AppServerPush
+* @description
+* This module handles server data communication when it pushes them to the client
+* exposing the factory SocketFactory, which is an API for instantiating sockets
+* that are integrated with Angular's digest cycle.
+* It is now based on SocketIO (http://socket.io/). Why?
+*
+* Using WebSockets is a modern, bidirectional protocol that enables an interactive communication
+* session between the browser and a server. Its main current drawback is
+* that implementation is generally only available in the latest browsers. However, by
+* using Socket.IO, this low level detail is abstracted away and we, as programmers,
+* are relieved of the need to write browser-specific code.
+*
+* The current release of socket.io is 0.9.10.
+*
+* The module AppServerPush is included in the main module.
+*
+* The private module AppSocketIO simply wraps SocketIO API to be used by AppServerPush.
+*
+* So, AppServerPush is ready to integrate other Server Push approaches (e.g. Atmosphere) only by including
+* a new module and injecting it to AppServerPush.
+*
+*
+* NOTE ABOUT CLIENT DEPENDENCIES WITH SOCKET.IO
+*
+* The Socket.IO server will handle serving the correct version of the Socket.IO client library;
+*
+* We should not be using one from elsewhere on the Internet. From the top example on http://socket.io/:
+*
+*  <script src="/socket.io/socket.io.js"></script>
+*
+* This works because we wrap our HTTP server in Socket.IO (see the example at How To Use) and it intercepts
+* requests for /socket.io/socket.io.js and sends the appropriate response automatically.
+*
+* That is the reason it is not a dependency handled by bower.
+*/
 angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
 /*
      To make socket error events available across an app, in one of the controllers:
@@ -54,8 +54,8 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
             ...
      });
      */
-.run(['$log', 'socket', 'SERVERPUSH_CONFIG',
-    function ($log, socket, SERVERPUSH_CONFIG) {
+.run(['$log', 'socket',
+    function ($log, socket) {
         $log.info('AppServerPush run');
         socket.forward('error');
     }])
@@ -138,7 +138,7 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
         return factory;
 
 }])
-
+    
 /**
  * @ngdoc service
  * @name AppServerPush.factory:WebSocketService
@@ -147,22 +147,22 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
  * @requires WEBSOCKETS_CONFIG
  *
  * @description
- */
+ */   
 .factory('WebSocketFactory', ['$log', 'WEBSOCKETS_CONFIG',
-    function ($log, WEBSOCKETS_CONFIG) {
+    function($log, WEBSOCKETS_CONFIG) {
         var factory = {};
-
+        
         /**
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#connect
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {string} itemId The id of the item
+            @param {string} itemId The id of the item 
             @description Establishes a connection to a swebsocket endpoint.
         */
-        factory.connect = function (url) {
-
-            if (factory.ws) {
-                return;
+        factory.connect = function(url) {
+             
+            if(factory.ws) { 
+                return; 
             };
 
             var ws;
@@ -177,17 +177,17 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
                     factory.callback(WEBSOCKETS_CONFIG.WS_CONNECTED);
                 } else {
                     factory.callback(WEBSOCKETS_CONFIG.WS_DISCONNECTED);
-                }
+                 }
             };
 
-            ws.onerror = function () {
-                factory.callback(WEBSOCKETS_CONFIG.WS_FAILED_CONNECTION);
+            ws.onerror = function() {
+              factory.callback(WEBSOCKETS_CONFIG.WS_FAILED_CONNECTION);
             };
 
-            ws.onmessage = function (message) {
-                factory.callback(message.data);
+            ws.onmessage = function(message) {
+              factory.callback(message.data);
             };
-
+            
             ws.onclose = function () {
                 if (ws != null) {
                     ws.close();
@@ -197,51 +197,51 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
 
             factory.ws = ws;
         };
-
+        
         /**
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#send
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {object} message Message payload in JSON format.
+            @param {object} message Message payload in JSON format. 
             @description Send a message to the ws server.
         */
-        factory.send = function (message) {
-            $log.debug('factory.ws: ' + factory.ws);
-            factory.ws.send(message);
+        factory.send = function(message) {
+          $log.debug('factory.ws: ' + factory.ws);
+          factory.ws.send(message);
         };
         /**
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#subscribe
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {object} callback .
+            @param {object} callback . 
             @description Retrieve the currentcallback of the endpoint connection.
         */
-        factory.subscribe = function (callback) {
-            factory.callback = callback;
+        factory.subscribe = function(callback) {
+          factory.callback = callback;
         };
-
+        
         /**
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#disconnect
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {string} itemId The id of the item
+            @param {string} itemId The id of the item 
             @description Close the WebSocket connection.
         */
-        factory.disconnect = function () {
+        factory.disconnect = function() {
             factory.ws.close();
         };
-
-
-
-        /**
+        
+        
+        
+         /**
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#status
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {string} itemId The id of the item
+            @param {string} itemId The id of the item 
             @description WebSocket connection status.
         */
-        factory.status = function () {
-            if (factory.ws == null || angular.isUndefined(factory.ws)) {
+        factory.status = function() {
+            if (factory.ws == null || angular.isUndefined(factory.ws)){
                 return WebSocket.CLOSED;
             }
             return factory.ws.readyState;
@@ -251,24 +251,24 @@ angular.module('AppServerPush', ['AppSocketIO', 'AppConfiguration'])
             @ngdoc method
             @name AppServerPush.factory:WebSocketFactory#statusAsText
             @methodOf AppServerPush.factory:WebSocketFactory
-            @param {string} itemId The id of the item
+            @param {string} itemId The id of the item 
             @description Returns WebSocket connection status as text.
         */
-        factory.statusAsText = function () {
-            var readyState = factory.status();
-            if (readyState == WebSocket.CONNECTING) {
-                return WEBSOCKETS_CONFIG.CONNECTING;
-            } else if (readyState == WebSocket.OPEN) {
-                return WEBSOCKETS_CONFIG.OPEN;
-            } else if (readyState == WebSocket.CLOSING) {
-                return WEBSOCKETS_CONFIG.WS_CLOSING;
-            } else if (readyState == WebSocket.CLOSED) {
-                return WEBSOCKETS_CONFIG.WS_CLOSED;
-            } else {
-                return WEBSOCKETS_CONFIG.WS_UNKNOWN;
-            }
+        factory.statusAsText = function() {
+                    var readyState = factory.status();
+                    if (readyState == WebSocket.CONNECTING){
+                            return WEBSOCKETS_CONFIG.CONNECTING;
+                    } else if (readyState == WebSocket.OPEN){
+                            return WEBSOCKETS_CONFIG.OPEN;
+                    } else if (readyState == WebSocket.CLOSING){
+                            return WEBSOCKETS_CONFIG.WS_CLOSING;
+                    } else if (readyState == WebSocket.CLOSED){
+                            return WEBSOCKETS_CONFIG.WS_CLOSED;
+                    } else {
+                            return WEBSOCKETS_CONFIG.WS_UNKNOWN;
+                    }
         };
-
+        
 
         return factory;
 }]);
@@ -313,7 +313,7 @@ angular.module('AppSocketIO', ['AppConfiguration'])
  * If an argument is not provided, it defaults to $rootScope.
  * As a reminder, broadcasted events are propagated down to descendant scopes.
  */
-.provider('socket', ['SERVERPUSH_CONFIG',
+ .provider('socket', ['SERVERPUSH_CONFIG',
     function (SERVERPUSH_CONFIG) {
 
         // when forwarding events, prefix the event name
