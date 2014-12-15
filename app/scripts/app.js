@@ -2,7 +2,7 @@
 
 angular.module('App.Controllers', []);
 
-angular.module('App', ['COMMONAPI', 'App.Controllers'])
+angular.module('App', ['COMMONAPI', 'App.Controllers','ngAnimate'])
 
 .run(['$rootScope', '$location', '$log', 'AuthenticationService', 'RoleService', 'Oauth_AccessToken', 'AUTHORIZATION_DATA', 'SECURITY_GENERAL',
             function ($rootScope, $location, $log, AuthenticationService, RoleService, Oauth_AccessToken, AUTHORIZATION_DATA, SECURITY_GENERAL) {
