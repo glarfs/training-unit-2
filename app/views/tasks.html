@@ -9,15 +9,7 @@
                     <button class="btn btn-default" type="button" ng-click="search.title=''">Clear filter</button>
                 </span>
             </div>
-            <br>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
-                <input ng-model="newTask" type="text" class="form-control" placeholder="Add task..." ng-keypress="taskKeyPressed($event)">
-                <span ng-if="newTask.length" class="input-group-btn">
-                    <button class="btn btn-primary" type="button" ng-click="addTask()">Add!</button>
-                </span>
-            </div>
-            <br>
+            <br>            
         </div>
         <div class="col-md-9 col-sm-8">
             <div rest rest-path="tasks" rest-name="tasks"></div>
@@ -30,9 +22,6 @@
                         <i class="glyphicon" ng-class="{'glyphicon-unchecked':!task.done,'glyphicon-check':task.done}"></i>
                         <label ng-class="{strike:task.done}">{{task.title}}</label>
                     </div>
-                    <div class="pull-right" ng-click="deleteTask(task.title)">
-                        <i class="glyphicon glyphicon-remove-circle"></i>
-                    </div>
                     <div class="clearfix"></div>
                 </a>
 
@@ -42,10 +31,7 @@
                     </label>
                 </a>
             </div>
-
-            <alert ng-if="deletingTask" type="warning">Deleting task...</alert>
-            <alert ng-if="deleteTaskSuccess" class="fade-in" type="success">Task deleted successfully!</alert>
-            <alert ng-if="deleteTaskError" class="fade-in" type="danger" close="deleteTaskError=false">Error when deleting task.</alert>
+            
         </div>
     </div>
     <button type="button" class="btn btn-primary" ui-sref="home">Back to Home <i class="glyphicon glyphicon-arrow-left"></i>
