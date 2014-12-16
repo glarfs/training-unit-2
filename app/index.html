@@ -67,10 +67,10 @@
                  will set the links to 'active' if, for example on the first link, 'contacts' or any of
                  its descendant states are activated. -->
                     <li data-ng-class="{ active: $state.includes('home') }">
-                        <a ui-sref="home"><i class="glyphicon glyphicon-home"></i> <span translate>HOME</span></a>
+                        <a ui-sref="home"><i class="glyphicon glyphicon-home"></i> Home</span></a>
                     </li>
                     <li data-ng-class="{ active: $state.includes('tasks') }">
-                        <a ui-sref="tasks"><i class="glyphicon glyphicon-list"></i> <span translate>TASKS</span></a>
+                        <a ui-sref="tasks"><i class="glyphicon glyphicon-list"></i> Tasks</a>
                     </li>
                 </ul>
             </div>
@@ -127,11 +127,7 @@
 
     <!-- Server Push module -->
 
-    <!-- Translate module -->
-    <script src="bower_components/appverse-web-html5-core/src/modules/api-translate.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
-    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
-    <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <!-- Translate module -->    
 
     <!-- Utils module -->
     <script src="bower_components/appverse-web-html5-core/src/modules/api-utils.js"></script>
