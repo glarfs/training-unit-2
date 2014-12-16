@@ -89,7 +89,7 @@
 
     <!-- build:js scripts/scripts.js -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-touch/angular-touch.min.js"></script>
     <script src="bower_components/modernizr/modernizr.js"></script>
 
@@ -104,6 +104,7 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/angular-cache/dist/angular-cache.min.js"></script>
     <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/ng-grid/build/ng-grid.debug.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
 
     <!-- UI components -->
@@ -113,11 +114,9 @@
     <script src="bower_components/appverse-web-html5-core/src/modules/api-configuration.js"></script>
     <script src="bower_components/appverse-web-html5-core/src/modules/api-detection.js"></script>
     <script src="bower_components/appverse-web-html5-core/src/modules/api-logging.js"></script>
-    <script src="scripts/api/modules/api-main.js"></script>
-
-    <!-- Performance module -->
-    <!--script src="bower_components/appverse-web-html5-core/src/modules/api-performance.js"></script>-->
-
+    <script src="bower_components/appverse-web-html5-core/src/modules/api-performance.js"></script>
+    <script src="bower_components/appverse-web-html5-core/src/modules/api-main.js"></script>    
+    
     <!-- REST module -->
     <script src="bower_components/lodash/dist/lodash.underscore.min.js"></script>
     <script src="bower_components/restangular/dist/restangular.min.js"></script>
@@ -129,6 +128,10 @@
     <!-- Server Push module -->
 
     <!-- Translate module -->
+    <script src="bower_components/appverse-web-html5-core/src/modules/api-translate.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
 
     <!-- Utils module -->
     <script src="bower_components/appverse-web-html5-core/src/modules/api-utils.js"></script>
@@ -139,7 +142,7 @@
 
     <!-- app -->
     <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/tasks-controllers.js"></script>
+    <script src="scripts/controllers/tasks-controller.js"></script>
     <script src="scripts/states/app-states.js"></script>
 
     <!-- endbuild -->

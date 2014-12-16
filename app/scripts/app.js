@@ -2,10 +2,10 @@
 
 angular.module('App.Controllers', []);
 
-angular.module('App', ['COMMONAPI', 'App.Controllers','ngAnimate'])
+angular.module('App', ['ngAnimate','COMMONAPI', 'App.Controllers'])
 
-.run(['$rootScope', '$location', '$log', 'AuthenticationService', 'RoleService', 'Oauth_AccessToken', 'AUTHORIZATION_DATA', 'SECURITY_GENERAL',
-            function ($rootScope, $location, $log, AuthenticationService, RoleService, Oauth_AccessToken, AUTHORIZATION_DATA, SECURITY_GENERAL) {
+.run(['$rootScope', '$location', '$log', 'AuthenticationService', 'RoleService', 'Oauth_AccessToken', 'AUTHORIZATION_DATA', 'SECURITY_GENERAL','$translate', 'tmhDynamicLocale',
+            function ($rootScope, $location, $log, AuthenticationService, RoleService, Oauth_AccessToken, AUTHORIZATION_DATA, SECURITY_GENERAL, $translate, tmhDynamicLocale) {
 
         /**
          * @function
