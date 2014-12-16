@@ -7,7 +7,7 @@
             <alert ng-if="tasksError" type="danger" close="tasksError=false">Error loading topics</alert>
 
             <div class="list-group">
-                <a ng-repeat="task in tasks | filter:search | orderBy:['done','title']" class="list-group-item fade-in">
+                <a ng-repeat="task in tasks | orderBy:['done','title']" class="list-group-item fade-in">
                     <div class="pull-left" ng-click="task.done=!task.done">
                         <i class="glyphicon" ng-class="{'glyphicon-unchecked':!task.done,'glyphicon-check':task.done}"></i>
                         <label ng-class="{strike:task.done}">{{task.title}}</label>
