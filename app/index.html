@@ -67,10 +67,10 @@
                  will set the links to 'active' if, for example on the first link, 'contacts' or any of
                  its descendant states are activated. -->
                     <li data-ng-class="{ active: $state.includes('home') }">
-                        <a ui-sref="home"><i class="glyphicon glyphicon-home"></i> Home</a>
+                        <a ui-sref="home"><i class="glyphicon glyphicon-home"></i> <span translate>HOME</span></a>
                     </li>
                     <li data-ng-class="{ active: $state.includes('tasks') }">
-                        <a ui-sref="tasks"><i class="glyphicon glyphicon-list"></i> Tasks</a>
+                        <a ui-sref="tasks"><i class="glyphicon glyphicon-list"></i> <span translate>TASKS</span></a>
                     </li>
                 </ul>
             </div>

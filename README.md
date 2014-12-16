@@ -23,6 +23,7 @@ There are a few tags on the following repository:
 * **step5**: add field with filter action
 * **step6**: add add and remove functionality
 * **step7**: i18n on Home and Tasks title
+* **final**: All completed steps
 
 ### Quick Start
 
