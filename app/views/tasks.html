@@ -5,23 +5,6 @@
             <div rest rest-path="tasks" rest-name="tasks"></div>
             <alert ng-if="tasksLoading" type="warning">Loading...</alert>
             <alert ng-if="tasksError" type="danger" close="tasksError=false">Error loading topics</alert>
-
-            <div class="list-group">
-                <a ng-repeat="task in tasks | orderBy:['done','title']" class="list-group-item fade-in">
-                    <div class="pull-left" ng-click="task.done=!task.done">
-                        <i class="glyphicon" ng-class="{'glyphicon-unchecked':!task.done,'glyphicon-check':task.done}"></i>
-                        <label ng-class="{strike:task.done}">{{task.title}}</label>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-
-                <a ng-if="newTask.length" class="list-group-item">
-                    <i class="glyphicon glyphicon-unchecked"></i>
-                    <label><i>{{newTask}}</i>
-                    </label>
-                </a>
-            </div>
-            
         </div>
     </div>
     <button type="button" class="btn btn-primary" ui-sref="home">Back to Home <i class="glyphicon glyphicon-arrow-left"></i>
