@@ -32,13 +32,5 @@ angular.module('App')
             // Use a url of "/" to set a states as the "index".
             url: "/home",
             templateUrl: 'views/home.html'
-        })
-
-        .state("tasks", {
-
-            // Use a url of "/" to set a states as the "index".
-            url: "/tasks",
-            templateUrl: 'views/tasks.html',
-            controller: 'tasksController'
         });
 }]);
