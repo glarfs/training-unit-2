@@ -2,9 +2,9 @@
 
 angular.module('boilerplateApp')
 
-.controller('homeController', ['$log', '$scope','$translate', 'tmhDynamicLocale'
+.controller('homeController', ['$log', '$scope',
 
-    function ($log, $scope,$translate, tmhDynamicLocale) {
+    function ($log, $scope) {
         $log.debug('homeController loading');
 
         $scope.homeTitle = 'Home page';
