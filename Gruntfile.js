@@ -424,9 +424,9 @@ module.exports = function (grunt) {
             },
             fonts: {
                 expand: true,
-                cwd: '<%= yeoman.app %>/bower_components/bootstrap-sass/fonts',
+                cwd: '<%= yeoman.app %>/bower_components/bootstrap-sass-official/assets/fonts',
                 dest: '.tmp/fonts',
-                src: '*'
+                src: '**/*'
             },
             png: {
                 expand: true,
